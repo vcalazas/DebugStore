@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/components/empty_list.dart';
 
 class FragmentCart extends StatefulWidget {
   const FragmentCart({super.key});
@@ -10,6 +11,6 @@ class FragmentCart extends StatefulWidget {
 class _FragmentCartState extends State<FragmentCart> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return EmptyList(text: "Adicione itens ao carrinho",);
   }
 }

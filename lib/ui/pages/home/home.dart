@@ -48,6 +48,7 @@ class _HomeState extends State<Home> {
       drawer: Maindrawermenu(),
       body: PageView(
         controller: pageController,
+        physics: NeverScrollableScrollPhysics(),
         children: [
           FragmentHome(),
           FragmentCart(),

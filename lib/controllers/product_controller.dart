@@ -8,7 +8,7 @@ class ProductController extends GetxController {
   var productSelected = ProductData().obs;
   var productList = <ProductData>[].obs;
 
-  var categorySelected = CategoryData().obs;
+  var categorySelected = CategoryData.mock(id: 0, name: "categoria 0").obs;
   var categoryList = <CategoryData>[].obs;
 
   static ProductController getInstance() {
