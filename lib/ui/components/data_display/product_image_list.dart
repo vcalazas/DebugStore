@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/models/product_data.dart';
+import 'package:untitled/ui/components/my_image.dart';
 
 class ProductImageList extends StatefulWidget {
   ProductData data;
@@ -30,7 +31,7 @@ class _CarouselWithIndicatorState extends State<ProductImageList> {
           options: CarouselOptions(
             autoPlay: false,
             enlargeCenterPage: true,
-            aspectRatio: 1.0,
+            aspectRatio: 1.2,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;
@@ -66,20 +67,10 @@ class _CarouselWithIndicatorState extends State<ProductImageList> {
   List<Widget> imageSliders() => widget.data.images!
       .map(
         (item) => Container(
-          child: Container(
-            margin: EdgeInsets.all(5.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              child: Stack(
-                children: <Widget>[
-                  Image.network(
-                    item,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ],
-              ),
-            ),
+          margin: EdgeInsets.all(5.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: Stack(children: <Widget>[MyImage(item)]),
           ),
         ),
       )

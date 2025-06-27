@@ -3,20 +3,23 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controllers/product_controller.dart';
 import 'package:untitled/models/product_data.dart';
+import 'package:untitled/ui/components/my_image.dart';
 
-class Productlist extends StatefulWidget {
-  const Productlist({super.key});
+class ProductSimilarlist extends StatefulWidget {
+  const ProductSimilarlist({super.key});
 
   @override
-  State<Productlist> createState() => _ProductlistState();
+  State<ProductSimilarlist> createState() => _ProductSimilarlistState();
 }
 
-class _ProductlistState extends State<Productlist> {
+class _ProductSimilarlistState extends State<ProductSimilarlist> {
   ProductController productController = ProductController.getInstance();
 
   @override
   void initState() {
-    productController.getProducts();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      productController.getProductsSimilar();
+    });
     super.initState();
   }
 
@@ -27,11 +30,11 @@ class _ProductlistState extends State<Productlist> {
         crossAxisCount: 2,
         mainAxisSpacing: 1,
         crossAxisSpacing: 1,
-        itemCount: productController.productList.length,
+        itemCount: productController.productSimilarList.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return Tile(productController.productList[index]);
+          return Tile(productController.productSimilarList[index]);
         },
       ),
     );
@@ -60,7 +63,13 @@ class Tile extends StatelessWidget {
               Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  Container(width: 150, height: 150, color: Colors.grey),
+                  if (productData.images != null)
+                    Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.grey,
+                      child: MyImage(productData.images!.first),
+                    ),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.favorite_border),

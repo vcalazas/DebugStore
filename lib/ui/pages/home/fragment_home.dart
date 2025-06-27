@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/components/data_display/product_list.dart';
 import 'package:untitled/ui/components/menu/category_menu.dart';
-import 'package:untitled/ui/components/product_list.dart';
-import 'package:untitled/ui/components/publicity.dart';
+import 'package:untitled/ui/components/data_display/publicity.dart';
 
 class FragmentHome extends StatelessWidget {
   const FragmentHome({super.key});

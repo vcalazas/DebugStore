@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:untitled/controllers/cart_controller.dart';
 import 'package:untitled/controllers/product_controller.dart';
 import 'package:untitled/models/product_data.dart';
+import 'package:untitled/ui/components/data_display/product_similar_list.dart';
 import 'package:untitled/ui/components/forms/button_big.dart';
 import 'package:untitled/ui/components/forms/button_icon.dart';
 import 'package:untitled/ui/components/forms/count_field.dart';
-import 'package:untitled/ui/components/product_image_list.dart';
+import 'package:untitled/ui/components/data_display/product_image_list.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
@@ -16,6 +18,35 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final ProductController _productController = ProductController.getInstance();
+  final CartController _cartController = CartController.getInstance();
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _productController.addListenerId(
+      ProductControllerListener.selectProduct,
+      _scrollToTop,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _productController.removeListenerId(
+      ProductControllerListener.selectProduct,
+      _scrollToTop,
+    );
+    super.dispose();
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +73,8 @@ class _ProductDetailsState extends State<ProductDetails> {
           actions: [ButtonIcon(onPressed: () {}, icon: Icons.favorite_border)],
         ),
         body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          controller: _scrollController,
           child: Container(
             padding: EdgeInsets.only(bottom: 60),
             child: Column(children: [ProductImageList(data), _infos(data)]),
@@ -53,7 +86,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: ButtonBig(
             icon: Icons.shopping_cart_outlined,
             text: "Adicionar ao carrinho",
-            onPressed: () {},
+            onPressed: () {_cartController.addProduct(data);},
           ),
         ),
       );
@@ -88,6 +121,12 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           Text("Descrição", style: Theme.of(context).textTheme.titleMedium),
           Text(data.description ?? ""),
+          Divider(height: 20),
+          Text(
+            "Produtos similares",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          ProductSimilarlist(),
         ],
       ),
     );

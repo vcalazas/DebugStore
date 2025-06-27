@@ -15,7 +15,9 @@ class _CategorymenuState extends State<Categorymenu> {
 
   @override
   void initState() {
-    _productController.getCategory();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _productController.getCategory();
+    });
     super.initState();
   }
 
