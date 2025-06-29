@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 class ProductData {
+  int? id;
   String? name, description;
   int? value;
 

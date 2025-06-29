@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controllers/cart_controller.dart';
 import 'package:untitled/controllers/product_controller.dart';
+import 'package:untitled/models/cart_product_data.dart';
 import 'package:untitled/models/product_data.dart';
 import 'package:untitled/ui/components/data_display/product_similar_list.dart';
 import 'package:untitled/ui/components/forms/button_big.dart';
@@ -19,8 +20,9 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final ProductController _productController = ProductController.getInstance();
   final CartController _cartController = CartController.getInstance();
-
   final ScrollController _scrollController = ScrollController();
+
+  int _count = 1;
 
   @override
   void initState() {
@@ -86,7 +88,9 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: ButtonBig(
             icon: Icons.shopping_cart_outlined,
             text: "Adicionar ao carrinho",
-            onPressed: () {_cartController.addProduct(data);},
+            onPressed: () {
+              _cartController.addProduct(CartProcudtData(data, _count));
+            },
           ),
         ),
       );
@@ -115,7 +119,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   ),
                 ),
-                CountField(),
+                CountField(
+                  onChange: (count) {
+                    setState(() {
+                      _count = count;
+                    });
+                  },
+                ),
               ],
             ),
           ),

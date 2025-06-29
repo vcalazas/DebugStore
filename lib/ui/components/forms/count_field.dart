@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:untitled/ui/components/forms/button_icon.dart';
 
 class CountField extends StatefulWidget {
-  const CountField({super.key});
+  Function(int count) onChange;
+  int? initialCount;
+
+  CountField({required this.onChange, this.initialCount});
 
   @override
   State<CountField> createState() => _CountFieldState();
@@ -10,6 +13,12 @@ class CountField extends StatefulWidget {
 
 class _CountFieldState extends State<CountField> {
   int _count = 1;
+
+  @override
+  void initState() {
+    _count = widget.initialCount ?? 1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +37,8 @@ class _CountFieldState extends State<CountField> {
             icon: Icons.remove,
             onPressed: () {
               setState(() {
-                if (_count > 1)
-                  _count--;
+                if (_count > 1) _count--;
+                widget.onChange(_count);
               });
             },
           ),
@@ -39,6 +48,7 @@ class _CountFieldState extends State<CountField> {
             onPressed: () {
               setState(() {
                 _count++;
+                widget.onChange(_count);
               });
             },
           ),

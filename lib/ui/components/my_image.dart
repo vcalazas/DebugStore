@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyImage extends StatelessWidget {
   String? image;
+  double? width;
 
-  MyImage(this.image);
+  MyImage(this.image, {this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +12,14 @@ class MyImage extends StatelessWidget {
       return Image.asset(
         image!,
         fit: BoxFit.cover,
-        width: MediaQuery.of(context).size.width,
+        width: width,
       );
     }
     if (image != null && !image!.contains("assets/")) {
       return Image.network(
         image!,
         fit: BoxFit.cover,
-        width: MediaQuery.of(context).size.width,
+        width: width,
       );
     }
 

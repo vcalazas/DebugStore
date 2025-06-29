@@ -8,17 +8,48 @@ import 'package:untitled/ui/pages/home/fragment_home.dart';
 import 'package:untitled/ui/pages/home/fragment_notification.dart';
 import 'package:untitled/ui/pages/home/fragment_profile.dart';
 
+enum HomeStartPage { home, cart, profile, notification }
+
 class Home extends StatefulWidget {
-  const Home({super.key});
+  HomeStartPage? startPage;
+
+  Home({super.key, this.startPage});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  late PageController _pageController;
+
   int _selectedPage = 0;
-  PageController pageController = PageController();
   String _title = 'Home';
+
+  @override
+  void initState() {
+    switch (widget.startPage) {
+      case HomeStartPage.cart:
+        _selectedPage = 1;
+        _title = 'Carrinho';
+        break;
+      case HomeStartPage.profile:
+        _selectedPage = 2;
+        _title = 'Conta';
+        break;
+      case HomeStartPage.notification:
+        _selectedPage = 3;
+        _title = 'Notificações';
+        break;
+      default:
+        _selectedPage = 0;
+        _title = 'Home';
+    }
+    _pageController = PageController(initialPage: _selectedPage);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _pageController.jumpToPage(_selectedPage);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +75,7 @@ class _HomeState extends State<Home> {
       ),
       drawer: Maindrawermenu(),
       body: PageView(
-        controller: pageController,
+        controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
         children: [
           FragmentHome(),
@@ -89,7 +120,7 @@ class _HomeState extends State<Home> {
       onTap: (index) {
         setState(() {
           _selectedPage = index;
-          pageController.jumpToPage(index);
+          _pageController.jumpToPage(index);
           _title = (pages[index].title as Text).data ?? "";
         });
       },
